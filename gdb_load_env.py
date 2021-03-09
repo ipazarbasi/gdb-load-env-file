@@ -10,14 +10,17 @@ except ImportError:
 
 
 class LoadEnvFile(gdb.Command):
-  """Sets the current environment from contents of a .env file"""
-  def __init__(self):
-    super(LoadEnvFile, self).__init__("load-env-file", gdb.COMMAND_USER)
+    """Sets the current environment from contents of a .env file"""
 
-  def invoke(self, arg, from_tty):
-    # FIXME: If specified arg is a directory, try to find a '.env' file in it.
-    with open(arg, 'r') as f:
-      for line in f.readlines():
-        gdb.execute('set environment {}'.format(line), from_tty, True)
+    def __init__(self):
+        super(LoadEnvFile, self).__init__("load-env-file", gdb.COMMAND_USER)
+
+    def invoke(self, arg, from_tty):
+        # FIXME: If specified arg is a directory, try to find a '.env' file in it.
+        with open(arg, 'r') as f:
+            for line in f.readlines():
+                gdb.execute('set environment {}'.format(
+                    line.rstrip()), from_tty, True)
+
 
 LoadEnvFile()
